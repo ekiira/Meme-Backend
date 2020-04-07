@@ -4,9 +4,24 @@ const app = express();
 const cors = require('cors')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Meme = require('./models/meme')
+const dotenv = require('dotenv');
+const Meme = require('./models/meme');
 
-const databaseUrl = 'mongodb://localhost:27017/meme-generator';
+dotenv.config();
+// console.log('process----->>>>>', process.env.NODE_ENV, process.env.NODE_ENV.toString() == 'test')
+
+const env = process.env.NODE_ENV || 'development';
+const envMap = {
+  test: 'mongodb://localhost:27017/meme-generator-test',
+  development: 'mongodb://localhost:27017/meme-generator',
+  production: 'mongodb://localhost:27017/meme-generator-prod',
+};
+console.log('env--->>>', env);
+
+const databaseUrl = envMap[env];
+
+console.log('databaseurl ---->>>', databaseUrl);
+
 mongoose.connect(databaseUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -52,3 +67,5 @@ app.get('/view', (req, res) => {
 app.listen(3001, () => {
     console.log('server has started')
 });
+
+module.exports = app;
