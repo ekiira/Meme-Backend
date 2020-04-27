@@ -16,5 +16,19 @@ describe('Meme endpoints', () => {
             done(err);
         })
     });
+
+    it('view page', (done) => {
+        request(app)
+        .get('/view')
+        .then((res) => {
+            expect(res.status).to.eq(200)
+            done();
+        })
+        .catch(err => {
+            console.log(err)
+            done(err);
+        })
+    });
+
 });
 
